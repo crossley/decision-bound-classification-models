@@ -1,0 +1,195 @@
+#  Note:fed8091e - This file not intended for hand editing.
+#  Absoft Developer Tools Interface requires use of this makefile.
+#  Use the Generate Makefile command to customize your own makefiles.
+#
+#  Absoft Corporation Compiler Interface Makefile(v4.0.1).
+#
+#
+#  Type 'amake -f "nll_hybrid_function.amk"' in this directory at the DOS prompt
+#  to execute this makefile. Type 'amake -f "nll_hybrid_function.amk" clean' to
+#  remove old *.obj, *.exe, and *.res files.
+#
+#
+#  This file was created by Absoft Developer Tools Interface.
+#  File created on: Thu Jul 13 11:58:44 2006
+#
+#
+
+
+
+#
+#  Variables and flags for the compiler(s) and linker.
+#
+F95COMPILER= f95
+F77COMPILER= f77
+C_COMPILER=  acc
+CPPCOMPILER= acc
+LINKER=      lnk
+
+F9x_FLAGS=   -YEXT_SFX=_ -p "C:\Absoft90\imsl_mods" -c -nowdir -YEXT_NAMES=LCS  \
+            -YEXT_SFX=_ 
+F77_FLAGS=   -f -N15 
+FF95_FLAG=   
+F_DEFINES=   
+C_FLAGS=     
+CPP_FLAGS=   -c++
+C_DEFINES=   
+C_UNDEFS=    
+
+
+
+DFLT_LNK_FLG=-IGNOREDUPS -aliases:UNICODE.ALS 
+USER_LNK_FLG=-warn 
+LNK_FLAGS=   $(DFLT_LNK_FLG) $(USER_LNK_FLG)
+
+BASENAME=    nll_hybrid_function
+#
+#  Name of the executable.
+#
+TARGET=      nll_hybrid_function.exe
+OUTDIR=      .
+OBJDIR=      .\objs
+
+#
+#  Files for this executable.
+#
+F95FILES=    ".\nll_hybrid_function.f90" 
+MODFILES=    
+FFILES=      
+CFILES=      
+RCFILES=     
+RESFILES=    
+HFILES=      
+OBJS=        
+OTHERFILES=  
+MKFILE=      .\nll_hybrid_function.amk
+
+#
+#  Libraries for this executable.
+#
+USER_LIBS=   
+DFLT_LIBS=   vms.lib unix.lib "C:\Absoft90\lib\imsl.lib" absRT0.lib kernel32.lib fio.lib fmath.lib comdlg32.lib f90math.lib libac.lib blas.lib 
+LIBS=        $(USER_LIBS) $(DFLT_LIBS)
+
+
+
+#
+#  Include directories specified for this executable.
+#
+INCS=        
+LPATHS=      
+
+
+
+#
+#  Module flags, files and directories specified for this executable.
+#
+MOD_FLAGS=   
+MOD_INCS=    
+
+
+
+#  The following macro(s) and rule(s) are required for a full build
+#
+#  Rules and dependencies for the executable.
+#
+SRCFILES=    $(FFILES) $(F90FILES) $(CFILES) $(HFILES) $(RCFILES) $(RESFILES) $(OTHERFILES)
+RCRSFILES=   $(RESFILES) 
+
+OBJFILES=    $(OBJS) "$(OBJDIR)\nll_hybrid_function.obj" 
+
+#
+#  Optional macros, rules and dependencies included from prebuild file.
+#
+
+
+#
+#  Default dependency for this makefile
+#
+default: "$(OUTDIR)\$(TARGET)"
+
+all: "$(OUTDIR)\$(TARGET)"
+
+
+"$(OUTDIR)\$(TARGET)": "$(OUTDIR)" "$(OBJDIR)" "$(MKFILE)" $(OBJFILES) $(RCRSFILES)\
+	$(USER_LIBS) $(MODFILES)
+	$(LINKER) $(LPATHS) $(OBJFILES) $(LNK_FLAGS) $(RCRSFILES) $(LIBS) \
+		-out:"$(OUTDIR)\$(TARGET)"
+#
+#  Optional commands, macros, rules and dependencies from postbuild file.
+#
+#  To append additional commands to the default target dependency 
+#  begin the first line of the postbuild file with a tab.
+#
+
+
+.rc.res:
+	$(RC) -fo $@ $(RCFLAGS) $<
+
+
+"$(OBJDIR)" :
+	if not exist "$(OBJDIR)\nul" mkdir "$(OBJDIR)"
+
+
+"$(OUTDIR)" :
+
+
+qclean: clean_exe clean_misc clean_plugins
+	erase "$(OBJDIR)\*.mod"
+	erase "$(OBJDIR)\*.res"
+	erase "$(OBJDIR)\*.lib"
+	erase "$(OBJDIR)\*.obj"
+
+cleanProjFiles: clean
+
+clean: clean_f95 clean_f77 clean_acc clean_target
+
+clean_misc:
+	erase "$(OBJDIR)\*.amh"
+	erase "$(OBJDIR)\*.bif"
+	erase "$(OBJDIR)\*.int"
+	erase "$(OUTDIR)\*.amh"
+	erase "$(OUTDIR)\*.bif"
+	erase "$(OUTDIR)\*.int"
+	erase "$(OUTDIR)\*.mds"
+
+clean_f95: clean_f95src clean_f95mods
+
+clean_target: clean_misc clean_plugins clean_rsrc clean_exe
+
+clean_exe:
+	erase "$(OUTDIR)\$(TARGET)"
+
+clean_rsrc:
+
+clean_f95src:
+	erase "$(OBJDIR)\nll_hybrid_function.obj"
+
+clean_f77:
+
+clean_acc:
+
+clean_plugins:
+
+clean_f95mods:
+
+
+NLL_HYBRID_FUNCTION_F90_11 =   $(INCS) $(F9x_FLAGS) $(MOD_FLAGS) $(MOD_INCS) 
+"$(OBJDIR)\nll_hybrid_function.obj": ".\nll_hybrid_function.f90"
+	$(F95COMPILER) -o "$(OBJDIR)\nll_hybrid_function.obj" $(NLL_HYBRID_FUNCTION_F90_11)  ".\nll_hybrid_function.f90"
+
+
+
+
+#
+#  Include any scanned dependencies
+#
+include "$(OUTDIR)\mkdep\mkdep_$(BASENAME).amk"
+
+
+#
+#  Define necessary macros for dependency scanning.
+#
+MKDEP=       makedepend
+MKDEP_FLAGS= -quiet "-pre$(OBJDIR)\\" -Y -modInfo -errdel 
+

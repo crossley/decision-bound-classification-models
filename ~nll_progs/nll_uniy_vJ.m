@@ -1,0 +1,34 @@
+function negloglike = nll_uniy_vJ(in_params)
+
+%  negloglike = nll_uniy_vJ(in_params)
+%  returns the negative loglikelihood of the unidimensional Y
+%  bound fit
+
+%  Parameters:
+%    params format:  [bias noise] (so y=bias is boundary)
+%    data row format:  [subject_response x y correct_response]
+%    z_limit is the z-score value beyond which one should truncate
+
+%  We assume the A category is on the bottom
+
+global A_indices B_indices data z_limit
+
+yc = in_params(1);
+noise = in_params(2);
+
+zscoresY = (yc-data(:,3))./noise; 
+zscoresY = min(zscoresY,z_limit);
+zscoresY = max(zscoresY,-z_limit);
+
+pYA = normcdf(zscoresY);
+
+prA = pYA;
+log_A_probs = log(prA(A_indices));
+
+prB = 1-prA;
+log_B_probs = log(prB(B_indices));
+
+% Sum up loglikelihoods and return the negative
+
+negloglike = -(sum(log_A_probs)+sum(log_B_probs));
+
